@@ -8,9 +8,9 @@ type Props = {
 const Error = ({ error, reset }: Props) => {
   return (
     <div>
-      <h2>Помилка при завантаженні</h2>
+      <h2>Error while loading</h2>
       <p>{error.message}</p>
-      <button onClick={reset}>Спробувати знову</button>
+      <button onClick={reset}>Try again</button>
     </div>
   );
 }

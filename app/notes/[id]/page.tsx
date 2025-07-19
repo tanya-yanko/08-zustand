@@ -3,13 +3,43 @@ import NoteDetailsClient from './NoteDetails.client';
 import { fetchNoteById } from '@/lib/api';
 
 
-interface NoteDetailPageProps {
+type Props = {
   params: Promise<{ id: string }>;
+};
+
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const { title, content, tag } = await fetchNoteById(Number(id));
+
+  return {
+    title: title,
+    description: `${tag}: ${content.slice(0, 30)}...`,
+    openGraph: {
+      title: title,
+      description: `${tag}: ${content.slice(0, 30)}...`,
+      url: `https://08-zustand-zeta.vercel.app/notes/filter/${id}`,
+      images: [
+        {
+          url: '/notehub-og-meta',
+          width: 1200,
+          height: 630,
+          alt: 'NoteHub styling card',
+        },
+        {
+          url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'NoteHub styling card',
+        },
+      ],
+    },
+  };
 }
 
-export default async function NoteDetailPage({ params }: NoteDetailPageProps) {
+export default async function NoteDetails({ params }: Props) {
   const { id } = await params;
   const idNum = Number(id);
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -19,7 +49,7 @@ export default async function NoteDetailPage({ params }: NoteDetailPageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NoteDetailsClient />
+      {id && <NoteDetailsClient />}
     </HydrationBoundary>
   );
 }

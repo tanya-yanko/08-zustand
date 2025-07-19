@@ -1,43 +1,68 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import './globals.css';
 import Header from '@/components/Header/Header';
-import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+import Footer from '@/components/Footer/Footer';
+import { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
+import css from './Main.module.css';
 
 export const metadata: Metadata = {
-  title: 'Note Hub',
-  description: 'Created by Go IT',
+  title: 'Web app to create and manage your own notes by categories',
+  description:
+    'Create, manage, and organize your notes by categories with a clean and intuitive web app.',
+  icons: {
+    icon: '/favicon.ico',
+  },
+
+  openGraph: {
+    title: 'Web app to create and manage your own notes by categories',
+    description:
+      'Create, manage, and organize your notes by categories with a clean and intuitive web app.',
+    url: 'https://08-zustand-zeta.vercel.app/',
+    images: [
+      {
+        url: '/notehub-og-meta',
+        width: 1200,
+        height: 630,
+        alt: 'NoteHub styling card',
+      },
+      {
+        url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'NoteHub styling card',
+      },
+    ],
+    type: 'website',
+    siteName: 'NoteHub',
+  },
 };
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-  modal?: React.ReactNode;
-}
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-roboto',
+  display: 'swap',
+});
 
-export default function RootLayout({ children, modal }: RootLayoutProps) {
+type ChildrenType = {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+};
+
+export default function RootLayout({
+  children,
+  modal,
+}: Readonly<ChildrenType>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={roboto.variable}>
         <TanStackProvider>
           <Header />
-          <main>{children}</main>
-          {/* Здесь добавлен слот для параллельного роута modal */}
-          {modal}
-          <footer>
-            <p>
-              Created <time dateTime="2025">2025</time>
-            </p>
-          </footer>
+          <main className={css.main}>{children}</main>
+          {}
+          <Footer />
+          <div style={{ position: 'fixed', top: 0, left: 0 }}>{modal}</div>
         </TanStackProvider>
       </body>
     </html>
