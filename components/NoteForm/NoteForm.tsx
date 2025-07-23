@@ -28,8 +28,8 @@ export default function NoteForm() {
       queryClient.refetchQueries({
         queryKey: ['allNotes'],
       });
-      router.back();
-      clearDraft();
+      clearDraft(); 
+      router.back(); 
     },
   });
 
@@ -59,6 +59,7 @@ export default function NoteForm() {
   }
 
   function handleCancel() {
+    clearDraft();
     router.back();
   }
 
